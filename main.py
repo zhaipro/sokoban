@@ -19,8 +19,8 @@ class GameShortest:
 
         self.line = line
         # start和end 表示开始的状态，结束的状态
-        # start只有2,4,0 2表示箱子开始位置,4表示人的位置,0表示其他。
-        # end只有1,3,0 1表示墙,3表示箱子结束位置,0表示其他。
+        # start只有0, 1, 2, 4。
+        # end只有0, 3，0表示其他。
         # 现在只需要把start状态中的2位置移动到end的3的位置即满足条件
         self.start = ''
         self.end = ''
@@ -53,8 +53,8 @@ class GameShortest:
         1111111111
         '''
         # 现在只需要把start状态中的2位置移动到end状态中的3位置即满足条件
-        start_dict = {'0': '0', '1': '0', '2': '2', '3': '0', '4': '4', '5': '2', '6': '4'}
-        end_dict = {'0': '0', '1': '1', '2': '0', '3': '3', '4': '0', '5': '3', '6': '3'}
+        start_dict = {'0': '0', '1': '1', '2': '2', '3': '0', '4': '4', '5': '2', '6': '4'}
+        end_dict = {'0': '0', '1': '0', '2': '0', '3': '3', '4': '0', '5': '3', '6': '3'}
         for x in self.line:
             self.start += start_dict[x]
             self.end += end_dict[x]
@@ -107,7 +107,7 @@ class GameShortest:
                 npos = nx * self.col + ny
                 if not (0 <= nx < self.col and 0 <= ny < self.col):
                     continue
-                if start[pos] == '2' and start[npos] == '0' and self.end[npos] != '1':
+                if start[pos] == '2' and start[npos] == '0':
                     # 人和箱子一起推动，start中连着的状态为4 2 0，end中第三个不能为1。推完之后start变为0 4 2
                     # python中字符串不可更改，于是把字符串变成list更改状态后再转换为字符串
                     digits = list(start)
@@ -116,7 +116,7 @@ class GameShortest:
                     if new_start not in visi:
                         visi.add(new_start)
                         states.append([new_start, path + dir[3], cx, cy])
-                elif start[pos] == '0' and self.end[pos] != '1':
+                elif start[pos] == '0':
                     # 人动箱子不动，start中连着的状态为4 0，end中第二个不能为1。
                     digits = list(start)
                     digits[ppos], digits[pos] = '0', '4'
