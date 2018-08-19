@@ -50,15 +50,7 @@ class GameShortest:
         1113300111
         1111111111
         1111111111
-        :return:
         '''
-        mp = []
-        for pos in range(0, 100, 10):
-            mp.append(self.line[pos:pos + 10])
-        # print(self.line)
-        # for x in mp:
-        #     print(x)
-
         for pos, enum in enumerate(self.line):
             cx, cy = pos // 10, pos % 10
             if enum == '4':
@@ -69,14 +61,11 @@ class GameShortest:
         for x in self.line:
             self.sta += staDic[x]
             self.en += enDic[x]
-        # print(self.sta)
-        # print(self.en)
 
     def is_ok(self, sta):
         '''
         sta状态中的2位置移动到en的3的位置。
         :param sta:
-        :return:
         '''
         for s, e in zip(sta, self.en):
             if e == '3' and s != '2':
@@ -86,7 +75,6 @@ class GameShortest:
     def BFS(self):
         '''
         BFS获得最短路径保存到paths中
-        :return:
         '''
         # 4个方向，小写代表只是人移动，大写表示人推着箱子一起移动
         dirs = [[-1, 0, 'u', 'U'], [1, 0, 'd', 'D'], [0, 1, 'r', 'R'], [0, -1, 'l', 'L']]
@@ -141,7 +129,6 @@ class GameShortest:
 
 if __name__ == '__main__':
     f = open(level_file_path)
-    cnt = 0
     while(1):
         line = f.readline()
         line = line.strip('\n')
