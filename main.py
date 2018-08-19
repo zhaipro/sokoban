@@ -11,7 +11,8 @@ class GameShortest:
     def __init__(self, line, col=10):
         '''
         给一个图，长度为100的字符串表示。
-        0空地 1墙 2箱子起始位置 3箱子终点位置 4人的起始位置
+        0空地 1墙 2箱子起始位置 3箱子终点位置 4人起始位置
+        5箱子起始就在终点位置 6人起始就在终点位置
         :param line: 地图，用字符串表示。如 level_file.txt 中的每一行表示每一关的地图。
         :param col: 地图的长宽，由于设定为10*10，默认为10
         '''
@@ -51,15 +52,15 @@ class GameShortest:
         1111111111
         1111111111
         '''
-        for pos, enum in enumerate(self.line):
-            if enum == '4':
-                self.px, self.py = pos // self.col, pos % self.col
         # 现在只需要把start状态中的2位置移动到end状态中的3位置即满足条件
-        start_dict = {'0': '0', '1': '0', '2': '2', '3': '0', '4': '4'}
-        end_dict = {'0': '0', '1': '1', '2': '0', '3': '3', '4': '0'}
+        start_dict = {'0': '0', '1': '0', '2': '2', '3': '0', '4': '4', '5': '2', '6': '4'}
+        end_dict = {'0': '0', '1': '1', '2': '0', '3': '3', '4': '0', '5': '3', '6': '3'}
         for x in self.line:
             self.start += start_dict[x]
             self.end += end_dict[x]
+        for pos, enum in enumerate(self.start):
+            if enum == '4':
+                self.px, self.py = pos // self.col, pos % self.col
 
     def is_ok(self, start):
         '''
