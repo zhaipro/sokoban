@@ -4,20 +4,32 @@
 # @File    : BFS.py
 # @Software: PyCharm Community Edition
 
-level_file_path = 'level_file.txt'
+
+# 游戏关卡
+class Levels:
+    def __init__(self, fn='levels.txt'):
+        self.fn = fn
+
+    def __iter__(self):
+        # 文件中的每一行表示每一关的地图
+        for line in open(self.fn):
+            # 非注释和空行
+            if line[0] not in ('#', '\n'):
+                # 地图，用字符串表示
+                yield line.strip('\n')
 
 
 class GameShortest:
-    def __init__(self, line, col=10):
+    def __init__(self, level, col=10):
         '''
         给一个图，长度为100的字符串表示。
-        0空地 1墙 2箱子起始位置 3箱子终点位置 4人起始位置
-        5箱子起始就在终点位置 6人起始就在终点位置
-        :param line: 地图，用字符串表示。如 level_file.txt 中的每一行表示每一关的地图。
+        0空地 1墙 2箱子 3终点 4人
+        5箱子在终点 6人在终点
+        :param level
         :param col: 地图的长宽，由于设定为10*10，默认为10
         '''
 
-        self.line = line
+        self.level = level
         # start和end 表示开始的状态，结束的状态
         # start只有0, 1, 2, 4。
         # end只有0, 3，0表示其他。
@@ -27,7 +39,7 @@ class GameShortest:
         self.col = col
         # px, py表示4(人)的位置
         self.px, self.py = -1, -1
-        # paths记录最短路径（可能有多条）
+        # paths记录最短路径(可能有多条)
         self.paths = []
         # len记录最短路径长度
         self.len = -1
@@ -55,7 +67,7 @@ class GameShortest:
         # 现在只需要把start状态中的2位置移动到end状态中的3位置即满足条件
         start_dict = {'0': '0', '1': '1', '2': '2', '3': '0', '4': '4', '5': '2', '6': '4'}
         end_dict = {'0': '0', '1': '0', '2': '0', '3': '3', '4': '0', '5': '3', '6': '3'}
-        for x in self.line:
+        for x in self.level:
             self.start += start_dict[x]
             self.end += end_dict[x]
         for pos, enum in enumerate(self.start):
@@ -127,10 +139,9 @@ class GameShortest:
 
 
 if __name__ == '__main__':
-    f = open(level_file_path)
-    for line in f:
-        line = line.strip('\n')
-        gs = GameShortest(line)
+    levels = Levels()
+    for level in levels:
+        gs = GameShortest(level)
 
 '''
 每一关的最短路径:
