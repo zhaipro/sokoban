@@ -142,27 +142,3 @@ if __name__ == '__main__':
     levels = Levels()
     for level in levels:
         gs = GameShortest(level)
-
-'''
-每一关的最短路径:
-['uurrDDDDuuuulldRurDDDrddLLrruLuuulldRurDDDrdL']
-['drrRRurDDDDDrdLLL']
-['rrdrUrrrdLLulDullldR']
-['lluRRdrUllluuurrDDuulldRurD']
-['urrrrdrruulullllDurrrrdrddllullLrrrdrruLLL']
-['uurrrrDulllddrrRuulDrdL']
-['drrdddrdLLLuLDlUUUluRRRRurDDD']
-['uullLLddrrUdlllluuRurDrRddrruuLLL']
-['lUlLLdlluururrrrDDrdLullldlluRRRRllluurrrrdD']
-['ddrddLLulLdlUrrrdrruuluulldDuurrddrddllLLrruLL']
-['luurrrdrdLLLrrrddlUruuulllldDrddlUUrrRdrU']
-['ddlluluRuurrrDrddlluLrdrruLLddlluU']
-['dddlluluuRDrruulDrdLLulDrDLurrrddlLL']
-['drrdDrrddllUUUUruLdrDldR', 'drrdDrrddllUUUUrDldRuuuL']
-['drruLLLuulldRurDurDD']
-['urRdddrrUULLulldRururrD']
-['uLrddlluluuRDrrruullDldRRdrUU']
-['dddlUllllddrUUddrrUruLLrrruulDrdLL']
-['llldlUUUluurDrrrDDrdLLLulUluRRlddrddlUUUluR']
-['ulldRurDrrddllUUluurrDLLdrddrruuLrddlluU']
-'''
