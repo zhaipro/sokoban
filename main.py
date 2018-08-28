@@ -116,8 +116,6 @@ class GameShortest:
                 nx, ny = cx + dir[0], cy + dir[1]
                 # 4挨着挨着的状态的位置
                 npos = nx * self.col + ny
-                if not (0 <= nx < self.col and 0 <= ny < self.col):
-                    continue
                 if start[pos] == '2' and start[npos] == '0':
                     # 人和箱子一起推动，start中连着的状态为4 2 0。推完之后start变为0 4 2
                     # python中字符串不可更改，于是把字符串变成list更改状态后再转换为字符串
