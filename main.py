@@ -76,8 +76,7 @@ class GameShortest:
 
     def is_ok(self, start):
         '''
-        start状态中的2(盒子)位置移动到end的3(终点)的位置。
-        :param start:
+        如果start中的2(盒子)都移动到end的3(终点)即为游戏结束
         '''
         for s, e in zip(start, self.end):
             if e == '3' and s != '2':
@@ -114,13 +113,13 @@ class GameShortest:
                 cx, cy = px + dir[0], py + dir[1]
                 # 4(人)挨着的状态的位置
                 pos = cx * self.col + cy
-                nx, ny = px + 2 * dir[0], py + 2 * dir[1]
+                nx, ny = cx + dir[0], cy + dir[1]
                 # 4挨着挨着的状态的位置
                 npos = nx * self.col + ny
                 if not (0 <= nx < self.col and 0 <= ny < self.col):
                     continue
                 if start[pos] == '2' and start[npos] == '0':
-                    # 人和箱子一起推动，start中连着的状态为4 2 0，end中第三个不能为1。推完之后start变为0 4 2
+                    # 人和箱子一起推动，start中连着的状态为4 2 0。推完之后start变为0 4 2
                     # python中字符串不可更改，于是把字符串变成list更改状态后再转换为字符串
                     digits = list(start)
                     digits[ppos], digits[pos], digits[npos] = '0', '4', '2'
@@ -129,7 +128,7 @@ class GameShortest:
                         visi.add(new_start)
                         states.append([new_start, path + dir[3], cx, cy])
                 elif start[pos] == '0':
-                    # 人动箱子不动，start中连着的状态为4 0，end中第二个不能为1。
+                    # 人动箱子不动，start中连着的状态为4 0。
                     digits = list(start)
                     digits[ppos], digits[pos] = '0', '4'
                     new_start = ''.join(digits)
