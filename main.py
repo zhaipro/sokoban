@@ -37,8 +37,8 @@ class GameShortest:
         self.start = ''
         self.end = ''
         self.col = col
-        # px, py表示4(人)的位置
-        self.px, self.py = -1, -1
+        # ppos表示4(人)的位置
+        self.ppos = -1
         # paths记录最短路径(可能有多条)
         self.paths = []
         # len记录最短路径长度
@@ -72,7 +72,7 @@ class GameShortest:
             self.end += end_dict[x]
         for pos, enum in enumerate(self.start):
             if enum == '4':
-                self.px, self.py = pos // self.col, pos % self.col
+                self.ppos = pos
 
     def is_ok(self, start):
         '''
@@ -88,16 +88,16 @@ class GameShortest:
         BFS获得最短路径保存到paths中
         '''
         # 4个方向，小写代表只是人移动，大写表示人推着箱子一起移动
-        dirs = [[-1, 0, 'u', 'U'], [1, 0, 'd', 'D'], [0, 1, 'r', 'R'], [0, -1, 'l', 'L']]
+        dirs = [[-self.col, 'u', 'U'], [self.col, 'd', 'D'], [1, 'r', 'R'], [-1, 'l', 'L']]
         # 把开始的状态进入队列(list模拟)，状态包括字符串表示的当前状态、当前的路径、当前人的位置
-        states = [[self.start, '', self.px, self.py]]
+        states = [[self.start, '', self.ppos]]
         # 访问集合，访问过的状态(字符串)不再访问
         visi = set()
         visi.add(self.start)
 
         s_len = 1000
         while states:
-            start, path, px, py = states.pop(0)
+            start, path, ppos = states.pop(0)
             if len(path) > s_len:
                 break
             # 保存最短路径到paths中
@@ -106,33 +106,29 @@ class GameShortest:
                     self.paths.append(path)
                     self.len = len(path)
                 continue
-            # 4(人)状态的位置
-            ppos = px * self.col + py
 
             for dir in dirs:
-                cx, cy = px + dir[0], py + dir[1]
                 # 4(人)挨着的状态的位置
-                pos = cx * self.col + cy
-                nx, ny = cx + dir[0], cy + dir[1]
+                cpos = ppos + dir[0]
                 # 4挨着挨着的状态的位置
-                npos = nx * self.col + ny
-                if start[pos] == '2' and start[npos] == '0':
+                npos = cpos + dir[0]
+                if start[cpos] == '2' and start[npos] == '0':
                     # 人和箱子一起推动，start中连着的状态为4 2 0。推完之后start变为0 4 2
                     # python中字符串不可更改，于是把字符串变成list更改状态后再转换为字符串
                     digits = list(start)
-                    digits[ppos], digits[pos], digits[npos] = '0', '4', '2'
+                    digits[ppos], digits[cpos], digits[npos] = '0', '4', '2'
                     new_start = ''.join(digits)
                     if new_start not in visi:
                         visi.add(new_start)
-                        states.append([new_start, path + dir[3], cx, cy])
-                elif start[pos] == '0':
+                        states.append([new_start, path + dir[2], cpos])
+                elif start[cpos] == '0':
                     # 人动箱子不动，start中连着的状态为4 0。
                     digits = list(start)
-                    digits[ppos], digits[pos] = '0', '4'
+                    digits[ppos], digits[cpos] = '0', '4'
                     new_start = ''.join(digits)
                     if new_start not in visi:
                         visi.add(new_start)
-                        states.append([new_start, path + dir[2], cx, cy])
+                        states.append([new_start, path + dir[1], cpos])
 
 
 if __name__ == '__main__':
