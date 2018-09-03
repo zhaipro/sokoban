@@ -22,11 +22,11 @@ class Levels:
 class GameShortest:
     def __init__(self, level, col=10):
         '''
-        给一个图，长度为100的字符串表示。
+        给一个图，长度为10n的字符串表示。
         0空地 1墙 2箱子 3终点 4人
         5箱子在终点 6人在终点
         :param level
-        :param col: 地图的长宽，由于设定为10*10，默认为10
+        :param col: 地图的宽度，由于设定为10，默认为10
         '''
 
         self.level = level
@@ -50,8 +50,8 @@ class GameShortest:
 
     def pre(self):
         '''
-        1.获得start开始状态和end结束状态
-        2.获得人的起始位置px,py
+        1.获得start状态和end状态
+        2.获得人的位置ppos
         第一关的地图可视化为
         1111111111
         1111111111
@@ -70,9 +70,7 @@ class GameShortest:
         for x in self.level:
             self.start += start_dict[x]
             self.end += end_dict[x]
-        for pos, enum in enumerate(self.start):
-            if enum == '4':
-                self.ppos = pos
+        self.ppos = self.start.find('4')
 
     def is_ok(self, start):
         '''
