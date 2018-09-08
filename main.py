@@ -28,17 +28,13 @@ class GameShortest:
         :param level
         :param col: 地图的宽度，由于设定为10，默认为10
         '''
-
         self.level = level
         # start和end 表示开始的状态，结束的状态
         # start只有0, 1, 2, 4。
         # end只有0, 3，0表示其他。
-        # 现在只需要把start状态中的2位置移动到end的3的位置即满足条件
         self.start = ''
         self.end = ''
         self.col = col
-        # ppos表示4(人)的位置
-        self.ppos = -1
         # paths记录最短路径(可能有多条)
         self.paths = []
         # len记录最短路径长度
@@ -52,36 +48,25 @@ class GameShortest:
         '''
         1.获得start状态和end状态
         2.获得人的位置ppos
-        第一关的地图可视化为
-        1111111111
-        1111111111
-        1110001111
-        1110221111
-        1114201111
-        1111100111
-        1111300111
-        1113300111
-        1111111111
-        1111111111
         '''
         # 现在只需要把start状态中的2位置移动到end状态中的3位置即满足条件
-        start_dict = {'0': '0', '1': '1', '2': '2', '3': '0', '4': '4', '5': '2', '6': '4'}
-        end_dict = {'0': '0', '1': '0', '2': '0', '3': '3', '4': '0', '5': '3', '6': '3'}
+        start_dict = {'3': '0', '5': '2', '6': '4'}
+        end_dict = {'3': '3', '5': '3', '6': '3'}
         for x in self.level:
-            self.start += start_dict[x]
-            self.end += end_dict[x]
+            self.start += start_dict.get(x, x)
+            self.end += end_dict.get(x, '0')
+        assert '2' in self.start, '关卡中没有箱子？'
+        # ppos表示4(人)的位置
         self.ppos = self.start.find('4')
+        assert self.ppos != -1, '关卡中没有人？'
 
     def is_ok(self, start):
         '''
         如果start中的2(盒子)都移动到end的3(终点)即为游戏结束
         '''
-        for s, e in zip(start, self.end):
-            if e == '3' and s != '2':
-                return False
-        return True
+        return ('2', '0') not in zip(start, self.end)
 
-    def BFS(self):
+    def BFS(self):  # NOQA
         '''
         BFS获得最短路径保存到paths中
         '''
