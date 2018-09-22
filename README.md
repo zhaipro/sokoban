@@ -1,4 +1,6 @@
 
+![](https://api.travis-ci.org/zhaipro/sokoban.png?branch=master)
+
 ## 第一关的地图可视化为
 
 ```
