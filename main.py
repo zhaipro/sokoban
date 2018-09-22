@@ -12,14 +12,14 @@ class Levels:
 
     def __iter__(self):
         # 文件中的每一行表示每一关的地图
-        for line in open(self.fn):
+        for line in open(self.fn, encoding='utf-8'):
             # 非注释和空行
             if line[0] not in ('#', '\n'):
                 # 地图，用字符串表示
                 yield line.strip('\n')
 
 
-class GameShortest:
+class Game:
     def __init__(self, level, col=10):
         '''
         给一个图，长度为10n的字符串表示。
@@ -39,10 +39,6 @@ class GameShortest:
         self.paths = []
         # len记录最短路径长度
         self.len = -1
-
-        self.pre()
-        self.BFS()
-        print(self.paths)
 
     def pre(self):
         '''
@@ -113,8 +109,19 @@ class GameShortest:
                         visi.add(new_start)
                         states.append([new_start, path + dir[1], cpos])
 
+    def gen_shortest_paths(self):
+        self.pre()
+        self.BFS()
+        return self.paths
 
-if __name__ == '__main__':
+
+def main():
     levels = Levels()
     for level in levels:
-        gs = GameShortest(level)
+        game = Game(level)
+        yield game.gen_shortest_paths()
+
+
+if __name__ == '__main__':
+    for paths in main():
+        print(paths)
